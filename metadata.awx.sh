@@ -1,8 +1,6 @@
 #!/bin/bash
 
 PACKAGES=""
-PACKAGES+=" ansible"
-PACKAGES+=" ansible-python3"
 PACKAGES+=" docker-cli"
 PACKAGES+=" docker-engine"
 PACKAGES+=" docker-compose"
@@ -13,7 +11,10 @@ PACKAGES+=" python3"
 PACKAGES+=" python3-pip"
 PACKAGES+=" python3-setuptools"
 PACKAGES+=" yum-cron"
+PACKAGES+=" python36-oci-sdk"
 yum -y install $PACKAGES
+
+pip3 install ansible
 
 sed -i -r -e 's/\s+no$/ yes/g' /etc/yum/yum-cron*.conf
 sed -i -r -e '/^autoinstall/s/no/yes/' /etc/uptrack/uptrack.conf
@@ -42,9 +43,8 @@ git pull
 git checkout tags/${GIT_TAG}
 
 cd ${GIT_CHECKOUT}/installer
-ansible-playbook-3 install.yml -i inventory -e @/root/awx.vars.yml
+ansible-playbook install.yml -i inventory -e @/root/awx.vars.yml
 
 chmod +x /etc/cron.daily/docker-compose-pull
 
 /etc/cron.daily/docker-compose-pull
-
