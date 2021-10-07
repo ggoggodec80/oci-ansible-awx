@@ -16,6 +16,8 @@ yum -y install $PACKAGES
 
 pip3 install ansible
 
+ansible-galaxy collection install -f oracle.oci
+
 sed -i -r -e 's/\s+no$/ yes/g' /etc/yum/yum-cron*.conf
 sed -i -r -e '/^autoinstall/s/no/yes/' /etc/uptrack/uptrack.conf
 
